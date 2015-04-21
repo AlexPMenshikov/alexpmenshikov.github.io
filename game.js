@@ -80,7 +80,7 @@ window.onload = function() {
 			else{
                //background.velocity.x = 0
 			}
-			//background.tilePosition.x -= 0.3;
+			background.x -= 1;
 			//cloud.x -= 1;
 			//if (cloud.x < 0-cloud.width) cloud.x=innerWidth;
 			fpsCounter.setText(game.time.fps);

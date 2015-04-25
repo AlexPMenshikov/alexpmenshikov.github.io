@@ -27,12 +27,11 @@ window.onload = function() {
 			game.scale.setScreenSize(true);
 			game.load.image("star", "star.png");
 			game.load.image("diamond", "diamond.png"); 
-			game.load.image("pole", "pole3.png");
+			game.load.image("pole", "pole.png");
             game.load.image("powerbar", "powerbar.png");
 			game.load.image("background","back.jpg");
 			game.load.image("cloud","cloud.png");
 			game.load.image("cloud2","cloud2.png");
-            //game.load.spritesheet('dude', 'dude.png', 32, 48);
             game.load.spritesheet('baddie', 'baddie.png', 32, 32);
 		},
 		create:function(){
@@ -67,7 +66,7 @@ window.onload = function() {
 			game.input.onDown.add(prepareToJump, this);
 			addPole(80);
 			addCloud(game.width);
-			fpsCounter = game.add.text(600, 10, game.time.fps,{ font:"bold 16px Arial" });
+			fpsCounter = game.add.text(game.width-40, 10, game.time.fps,{ font:"bold 16px Arial" });
 		},
 		update:function(){
 			game.physics.arcade.collide(ninja, poleGroup, checkLanding);
@@ -80,7 +79,7 @@ window.onload = function() {
 			else{
                //background.velocity.x = 0
 			}
-			background.x -= 1;
+			//background.x -= 0.5;
 			//cloud.x -= 1;
 			//if (cloud.x < 0-cloud.width) cloud.x=innerWidth;
 			fpsCounter.setText(game.time.fps);
@@ -119,15 +118,16 @@ window.onload = function() {
 			maxCloudY = Math.max(item.x,maxCloudY)
 		});*/
 		var nextCloudY = game.rnd.between(0,45);
-		addCloud(nextCloudY);
+		var nextCloudX = game.width;
+		addCloud(nextCloudX, nextCloudY);
 	}
-	function addCloud(cloudY){
-		if(cloudY<game.width*2){
-			var cloud = new Cloud(game, game.width, cloudY);
+	function addCloud(cloudX,cloudY){
+		if(cloudX<game.width*2){
+			var cloud = new Cloud(game, cloudX, cloudY);
 			game.add.existing(cloud);
 			cloudGroup.add(cloud);
 			var nextCloudY = game.rnd.between(0,45);
-			//addCloud(nextCloudY);
+			//addCloud(cloudX, nextCloudY);
 		}
 	}
      function addNewPoles(){
@@ -142,7 +142,6 @@ window.onload = function() {
 		if(poleX<game.width*2){
 			placedPoles++;
 			var pole = new Pole(game,poleX,game.rnd.between(250,380));
-			//pole.backgroundColor  = "#878787";
 			game.add.existing(pole);	       
 	        pole.anchor.set(0.5,0);
 			poleGroup.add(pole);
@@ -225,9 +224,13 @@ window.onload = function() {
               // this.body.velocity.x = 0
          // }		 
 		 this.x -= 5;
+		if(cloudGroup.total<4 && this.x<game.width/2)
+			{addNewCloud();}
 		if(this.x<-this.width){
 			this.destroy();
 			addNewCloud();
+
 		}
+
 	}	
 }
